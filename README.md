@@ -35,6 +35,18 @@ Simulation d'une Kill Chain Active Directory complète (Red Team) et ingénierie
 
 ---
 
+## 📄 Rapport Complet
+
+Le rapport technique complet (30 pages) est disponible dans `/report/`.
+Il inclut :
+- Kill chain complète avec captures d'écran
+- IOCs analysés dans Wazuh Discover
+- Règles Wazuh XML commentées
+- Métriques SOC (MTTD, faux positifs)
+- Remédiations priorisées
+
+---
+
 ## 📐 Architecture du Laboratoire
 
 ```text
@@ -49,12 +61,3 @@ Simulation d'une Kill Chain Active Directory complète (Red Team) et ingénierie
 |  [macOS Host]       <====== HTTPS / 443 =================  [Wazuh SIEM Manager]   |
 |   Navigateur Web                                            192.168.10.30         |
 +-----------------------------------------------------------------------------------+
-## 📄 Rapport Complet
-
-Le rapport technique complet (30 pages) est disponible dans `/report/`.
-Il inclut :
-- Kill chain complète avec captures d'écran
-- IOCs analysés dans Wazuh Discover
-- Règles Wazuh XML commentées
-- Métriques SOC (MTTD, faux positifs)
-- Remédiations priorisées
