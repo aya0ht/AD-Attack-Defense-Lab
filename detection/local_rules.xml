@@ -1,0 +1,55 @@
+<!-- AD Attack/Defense Lab — Règles de détection custom -->
+<!-- Auteur : HOUMANAT Aya — Octobre 2026 -->
+<!-- Référence : DFIR Report BlackSuit Ransomware (août 2024) -->
+
+<group name="lab_custom,">
+
+  <rule id="100001" level="12">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^4769$</field>
+    <field name="win.eventdata.ticketEncryptionType">^0x17$</field>
+    <field name="win.eventdata.status">^0x0$</field>
+    <description>Kerberoasting détecté : ticket TGS RC4 (T1558.003) - Compte cible : $(win.eventdata.serviceName) - Source IP : $(win.eventdata.ipAddress)</description>
+    <mitre>
+      <id>T1558.003</id>
+    </mitre>
+    <group>kerberoasting,credential_access,</group>
+  </rule>
+
+  <rule id="100002" level="10">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^7045$</field>
+    <field name="win.eventdata.accountName">^LAB\\</field>
+    <description>Service Windows installé sous compte de domaine : préparation au dump LSA Secrets (T1003.004) - Service : $(win.eventdata.serviceName) - Compte : $(win.eventdata.accountName)</description>
+    <mitre>
+      <id>T1003.004</id>
+    </mitre>
+    <group>lsa_secrets,persistence,credential_access,</group>
+  </rule>
+
+  <rule id="100003" level="10">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^4624$</field>
+    <field name="win.eventdata.logonType">^3$</field>
+    <field name="win.eventdata.authenticationPackageName">^NTLM$</field>
+    <field name="win.eventdata.ipAddress">^192\.168\.10\.</field>
+    <description>Mouvement latéral NTLM depuis réseau interne (T1550.002) - Source : $(win.eventdata.ipAddress) - Cible : $(win.eventdata.targetUserName)</description>
+    <mitre>
+      <id>T1550.002</id>
+    </mitre>
+    <group>pass_the_hash,lateral_movement,</group>
+  </rule>
+
+  <rule id="100004" level="15">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^4662$</field>
+    <field name="win.eventdata.properties">1131f6ad-9c07-11d1-f79f-00c04fc2dcd2</field>
+    <field name="win.eventdata.subjectUserName" negate="yes">\.+\$$</field>
+    <description>DCSync détecté : réplication AD non autorisée (T1003.006) - Compte : $(win.eventdata.subjectUserName) - Domaine entièrement compromis</description>
+    <mitre>
+      <id>T1003.006</id>
+    </mitre>
+    <group>dcsync,credential_access,critical,</group>
+  </rule>
+
+</group>
